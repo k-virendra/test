@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React, {useEffect, useState} from 'react';
 import type {Node} from 'react';
 import {
@@ -19,6 +11,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import Smartconfig from 'react-native-smartconfig';
 
 import {
   Colors,
@@ -27,8 +20,6 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import firestore from '@react-native-firebase/firestore';
-import RNFS from 'react-native-fs';
 
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -38,44 +29,38 @@ const App: () => Node = () => {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-  const dataTwo = {
-    name: 'My name',
-    age: '20',
-  };
-  const path = RNFS.DocumentDirectoryPath + '/test.json';
 
-  const handlePress = async () => {
-    try {
-      await RNFS.writeFile(path, dataTwo, 'utf8');
-      console.log('Success!');
-    } catch (error) {
-      console.log(error);
-    }
+  const wifi = () => {
+    Smartconfig.start({
+      type: 'esptouch', //or airkiss, now doesn't not effect
+      ssid: 'wifi-network-ssid',
+      bssid: 'filter-device', //"" if not need to filter (don't use null)
+      password: 'wifi-password',
+      timeout: 50000, //now doesn't not effect
+    })
+      .then(function (results) {
+        //Array of device success do smartconfig
+        console.log(results);
+        /*[
+        {
+          'bssid': 'device-bssi1', //device bssid
+          'ipv4': '192.168.1.11' //local ip address
+        },
+        {
+          'bssid': 'device-bssi2', //device bssid
+          'ipv4': '192.168.1.12' //local ip address
+        },
+        ...
+      ]*/
+      })
+      .catch(function (error) {});
+
+    Smartconfig.stop(); //interrupt task
   };
   useEffect(() => {
-    getData(filter, limit);
+    wifi();
   }, [filter, limit]);
 
-  const getData = (filter, limit) => {
-    if (filter) {
-      firestore()
-        .collection('test')
-        .where('filter', '==', true)
-        .limit(limit)
-        .get()
-        .then(({_docs}) => {
-          setData(_docs);
-        });
-    } else {
-      firestore()
-        .collection('test')
-        .limit(limit)
-        .get()
-        .then(({_docs}) => {
-          setData(_docs);
-        });
-    }
-  };
   const Header = () => {
     return (
       <TouchableOpacity
@@ -102,12 +87,6 @@ const App: () => Node = () => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <FlatList
-        data={data}
-        ListHeaderComponent={() => <Header />}
-        onEndReached={() => setLimit(limit + 10)}
-        renderItem={({item}) => <ListComponent item={item} />}
-      />
     </SafeAreaView>
   );
 };
@@ -136,6 +115,18 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     fontSize: 22,
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  sectionDescription: {
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: '400',
+  },
+  highlight: {
+    fontWeight: '700',
   },
 });
 

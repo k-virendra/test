@@ -5715,6 +5715,11 @@
   "resolved" "https://registry.npmjs.org/react-native-gradle-plugin/-/react-native-gradle-plugin-0.0.7.tgz"
   "version" "0.0.7"
 
+"react-native-smartconfig@^0.2.2":
+  "integrity" "sha512-4SRJBc6VgiYYdqudGXKYtJJk6WP05yI1FyiIaDGUhtXhQVXYn2lXXNuDSqZWJeh3zA4IpiEorw+FubSBN2Xe7g=="
+  "resolved" "https://registry.npmjs.org/react-native-smartconfig/-/react-native-smartconfig-0.2.2.tgz"
+  "version" "0.2.2"
+
 "react-native@*", "react-native@0.69.5":
   "integrity" "sha512-4Psrj1nDMLQjBXVH8n3UikzOHQc8+sa6NbxZQR0XKtpx8uC3HiJBgX+/FIum/RWxfi5J/Dt/+A2gLGmq2Hps8g=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.69.5.tgz"
